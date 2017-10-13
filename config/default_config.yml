@@ -1,0 +1,5 @@
+host: localhost
+port: 9000
+env: development
+secret: f8tpFdhSowY7IUjOpfn2rw==
+
