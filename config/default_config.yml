@@ -2,4 +2,9 @@ host: localhost
 port: 9000
 env: development
 secret: f8tpFdhSowY7IUjOpfn2rw==
+db_adapter: sqlite3
+db_con_str: bakanovels.db
 
+i18n:
+  directory: locales
+  default_language: en_US

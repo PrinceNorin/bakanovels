@@ -2,15 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/PrinceNorin/bakanovels/config"
-	"github.com/PrinceNorin/bakanovels/controllers"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/PrinceNorin/bakanovels/config"
+	"github.com/PrinceNorin/bakanovels/controllers"
+	"github.com/PrinceNorin/bakanovels/utils/locale"
 )
 
 func main() {
 	c := config.Get()
+	err := locale.InitLocale(c.I18n)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 	APIRouter := controllers.APIRouter
 
 	addr := fmt.Sprintf("%s:%d", c.Host, c.Port)
