@@ -20,6 +20,8 @@ func init() {
 	api := r.Group("/api", cors.New(conf))
 	{
 		api.POST("/login", am.LoginHandler)
+		api.OPTIONS("/login", am.LoginHandler)
+
 		api.POST("/register", userController.UserRegisterHandler)
 		api.OPTIONS("/register", userController.UserRegisterHandler)
 	}
