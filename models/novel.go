@@ -20,3 +20,17 @@ type Novel struct {
 	PublishedAt *time.Time
 	Approved    bool
 }
+
+type NovelJSON struct {
+	UUID        string     `json:"id"`
+	Title       string     `json:"title"`
+	Type        string     `json:"type"`
+	Language    string     `json:"language"`
+	Description string     `json:"desc"`
+	Translate   string     `json:"translate"`
+	Status      string     `json:"status"`
+	Image       string     `json:"image"`
+	PublishedAt *time.Time `json:"published_at"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
+}

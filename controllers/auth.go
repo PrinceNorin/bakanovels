@@ -15,7 +15,7 @@ func buildAuthMiddleware() *jwt.GinJWTMiddleware {
 	return &jwt.GinJWTMiddleware{
 		Realm:         "bakanovels",
 		Key:           []byte(config.Get().SecretKey),
-		Timeout:       30 * time.Second,
+		Timeout:       4 * time.Hour,
 		MaxRefresh:    time.Hour,
 		Authenticator: authenticator,
 		Authorizator:  authorizator,
