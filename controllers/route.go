@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/PrinceNorin/bakanovels/controllers/novels"
 	"github.com/PrinceNorin/bakanovels/controllers/router"
 	"github.com/PrinceNorin/bakanovels/controllers/users"
 	"github.com/gin-contrib/cors"
@@ -26,7 +27,11 @@ func init() {
 		api.OPTIONS("/register", userController.UserRegisterHandler)
 	}
 
-	api.Group("/v1", am.MiddlewareFunc())
+	v1 := api.Group("/v1", am.MiddlewareFunc())
+	{
+		v1.POST("/novels", novelController.CreateNovelHandler)
+		v1.OPTIONS("/novels", novelController.CreateNovelHandler)
+	}
 
 	APIRouter = r
 }

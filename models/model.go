@@ -18,7 +18,10 @@ func init() {
 	}
 
 	// Register model here
-	db.AutoMigrate(new(User))
+	db.AutoMigrate(
+		new(User),
+		new(Novel),
+	)
 
 	DB = db
 }
