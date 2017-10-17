@@ -15,7 +15,7 @@ type Messages struct {
 }
 
 func GetMessages(c *gin.Context) *Messages {
-	T, _ := locale.GetTfunc(c)
+	T, _ := locale.GetTfuncWithMissing(c)
 	return &Messages{
 		c: c,
 		T: T,

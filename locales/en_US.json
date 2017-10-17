@@ -1,6 +1,30 @@
 [
+	{
+		"id": "translation.missing",
+		"translation": "translation missing for key: '{{.Key}}'"
+	},
+	{
+		"id": "internal.error",
+		"translation": "internal server error"
+	},
   {
     "id": "validation.required",
     "translation": "is required"
-  }
+  },
+	{
+		"id": "user.username.required",
+		"translation": "username is required"
+	},
+	{
+		"id": "user.email.required",
+		"translation": "email is required"
+	},
+	{
+		"id": "user.email.exists",
+		"translation": "email has already been taken"
+	},
+	{
+		"id": "user.confirm_password.eqfield",
+		"translation": "password does not match"
+	}
 ]

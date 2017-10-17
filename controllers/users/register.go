@@ -8,10 +8,13 @@ import (
 )
 
 func UserRegisterHandler(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
 	user, err := users.CreateUser(c)
 	if err == nil {
-		c.JSON(http.StatusOK, user)
+		c.JSON(http.StatusOK, gin.H{"user": user})
 	} else {
-		c.JSON(http.StatusUnprocessableEntity, err)
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"errors": err,
+		})
 	}
 }

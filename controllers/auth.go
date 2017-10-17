@@ -4,8 +4,6 @@ import (
 	"strconv"
 	"time"
 
-	"bitbucket.org/bakauta/server/model"
-
 	"github.com/PrinceNorin/bakanovels/config"
 	"github.com/PrinceNorin/bakanovels/models"
 	"github.com/appleboy/gin-jwt"
@@ -28,7 +26,7 @@ func buildAuthMiddleware() *jwt.GinJWTMiddleware {
 }
 
 func authenticator(email string, password string, c *gin.Context) (string, bool) {
-	var user model.User
+	var user models.User
 	err := models.DB.Where(&models.User{
 		Email:    email,
 		Password: password,
@@ -41,7 +39,7 @@ func authenticator(email string, password string, c *gin.Context) (string, bool)
 }
 
 func authorizator(userId string, c *gin.Context) bool {
-	var user model.User
+	var user models.User
 	id, err := strconv.Atoi(userId)
 	if err != nil {
 		return false

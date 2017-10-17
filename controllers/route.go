@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/PrinceNorin/bakanovels/controllers/router"
-	_ "github.com/PrinceNorin/bakanovels/controllers/users"
+	"github.com/PrinceNorin/bakanovels/controllers/users"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -13,13 +13,18 @@ func init() {
 	am := buildAuthMiddleware()
 
 	r := router.Get()
-	api := r.Group("/api")
-	api.Use(cors.Default())
 
-	api.POST("/login", am.LoginHandler)
+	conf := cors.DefaultConfig()
+	conf.AllowAllOrigins = true
+	conf.AddAllowMethods("OPTIONS")
+	api := r.Group("/api", cors.New(conf))
+	{
+		api.POST("/login", am.LoginHandler)
+		api.POST("/register", userController.UserRegisterHandler)
+		api.OPTIONS("/register", userController.UserRegisterHandler)
+	}
 
-	r1 := api.Group("/v1")
-	r1.Use(am.MiddlewareFunc())
+	api.Group("/v1", am.MiddlewareFunc())
 
 	APIRouter = r
 }

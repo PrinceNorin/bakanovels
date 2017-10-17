@@ -40,3 +40,18 @@ func GetTfunc(c *gin.Context) (i18n.TranslateFunc, error) {
 
 	return i18n.Tfunc(lang)
 }
+
+func GetTfuncWithMissing(c *gin.Context) (i18n.TranslateFunc, error) {
+	T, err := GetTfunc(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return func(tranID string, args ...interface{}) string {
+		msg := T(tranID, args...)
+		if msg == tranID {
+			return T("translation.missing", map[string]interface{}{"Key": tranID})
+		}
+		return msg
+	}, nil
+}
