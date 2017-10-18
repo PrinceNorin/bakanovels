@@ -9,28 +9,29 @@ import (
 type Novel struct {
 	gorm.Model
 
-	UUID        string `gorm:"not null;unique"`
-	Title       string `gorm:"not null"`
-	Type        string `gorm:"not null";type:varchar(25)`
-	Language    string `gorm:"not null;type:varchar(25)"`
-	Description string `gorm:"type:text"`
-	Translate   string `gorm:"type:varchar(25)"`
-	Status      string `gorm:"type:varchar(25)"`
-	Image       string
-	PublishedAt *time.Time
-	Approved    bool
+	UUID        string     `gorm:"not null;unique" json:"uuid"`
+	Title       string     `gorm:"not null" json:"title"`
+	Type        string     `gorm:"not null";type:varchar(25) json:"type"`
+	Language    string     `gorm:"not null;type:varchar(25)" json:"language"`
+	Description NullString `gorm:"type:text" json:"description"`
+	Translate   NullString `gorm:"type:varchar(25)" json:"translate"`
+	Status      string     `gorm:"type:varchar(25)" json:"status"`
+	Image       NullString `json:"image"`
+	PublishedAt *time.Time `json:"published_at"`
+	Approved    bool       `json:"approved"`
 }
 
 type NovelJSON struct {
-	UUID        string     `json:"id"`
-	Title       string     `json:"title"`
-	Type        string     `json:"type"`
-	Language    string     `json:"language"`
-	Description string     `json:"desc"`
-	Translate   string     `json:"translate"`
-	Status      string     `json:"status"`
-	Image       string     `json:"image"`
-	PublishedAt *time.Time `json:"published_at"`
-	CreatedAt   time.Time  `json:"created_at"`
-	UpdatedAt   time.Time  `json:"updated_at"`
+	Novel
+
+	ID       uint `json:"-"`
+	Approved bool `json:"-"`
+}
+
+func (n *Novel) ToNovelJSON() *NovelJSON {
+	return &NovelJSON{
+		Novel:    *n,
+		ID:       n.ID,
+		Approved: n.Approved,
+	}
 }

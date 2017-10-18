@@ -4,4 +4,7 @@ bakanovels
 bakanovels.exe
 bakanovels.db
 
-log/*
+/log/*
+/uploads/*
+
+!.keep

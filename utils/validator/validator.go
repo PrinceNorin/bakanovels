@@ -12,7 +12,7 @@ import (
 )
 
 func Validate(c *gin.Context, form interface{}) map[string][]string {
-	err := c.BindJSON(form)
+	err := c.Bind(form)
 	if err != nil {
 		var e interface{} = err
 
