@@ -1,8 +1,9 @@
 package config
 
 import (
-	"github.com/jinzhu/configor"
 	"sync"
+
+	"github.com/jinzhu/configor"
 )
 
 var once sync.Once

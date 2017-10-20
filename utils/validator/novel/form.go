@@ -7,10 +7,11 @@ import (
 )
 
 type NovelCreateForm struct {
-	Title       string            `json:"title" form:"title" binding:"required"`
-	Type        string            `json:"type" form:"type" binding:"required"`
-	Language    string            `json:"language" form:"language" binding:"required"`
-	Description models.NullString `json:"desc" form:"desc"`
-	Translate   models.NullString `json:"translate" form:"translate"`
-	PublishedAt *time.Time        `json:"published_at" form:"published_at"`
+	Title              string            `json:"title" binding:"required"`
+	Type               string            `json:"type" binding:"required"`
+	OriginalLanguage   string            `json:"original_language" binding:"required"`
+	Description        models.NullString `json:"desc"`
+	TranslatedLanguage models.NullString `json:"translate_language"`
+	PublishedAt        *time.Time        `json:"published_at"`
+	Image              string            `json:"image"`
 }

@@ -1,21 +1,19 @@
 package novels
 
 import (
-	"database/sql"
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"github.com/PrinceNorin/bakanovels/models"
 	"github.com/PrinceNorin/bakanovels/utils/messages"
+	"github.com/PrinceNorin/bakanovels/utils/uploader"
 	"github.com/PrinceNorin/bakanovels/utils/validator"
 	"github.com/PrinceNorin/bakanovels/utils/validator/novel"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/nu7hatch/gouuid"
-	"github.com/olahol/go-imageupload"
 )
 
-func CreateNovel(c *gin.Context) (*models.NovelJSON, map[string][]string) {
+func CreateNovel(c *gin.Context) (*models.Novel, map[string][]string) {
 	var form novelValidator.NovelCreateForm
 	msg := messages.GetMessages(c)
 
@@ -29,44 +27,26 @@ func CreateNovel(c *gin.Context) (*models.NovelJSON, map[string][]string) {
 		return nil, msg.Errors
 	}
 
-	var image string
-	file, err := c.FormFile("image")
-	if err == nil {
-		img, err := imageupload.Process(c.Request, "image")
-		if err != nil {
-			msg.AddError("message", err.Error())
-			return nil, msg.Errors
-		}
-
-		ext := filepath.Ext(file.Filename)
-		path := fmt.Sprintf("uploads/novels/%s%s", u4.String(), ext)
-		err = img.Save(path)
-		if err != nil {
-			msg.AddError("message", err.Error())
-			return nil, msg.Errors
-		}
-
-		image = path
-	}
-
 	novel := models.Novel{
-		UUID:        u4.String(),
-		Title:       form.Title,
-		Type:        strings.ToLower(form.Type),
-		Language:    strings.ToLower(form.Language),
-		Description: form.Description,
-		Translate:   form.Translate,
-		Status:      "ongoing",
-		PublishedAt: form.PublishedAt,
+		UUID:             u4.String(),
+		Title:            form.Title,
+		Type:             strings.ToLower(form.Type),
+		OriginalLanguage: strings.ToLower(form.OriginalLanguage),
+		Description:      form.Description,
+		Status:           "ongoing",
+		PublishedAt:      form.PublishedAt,
 	}
 
-	if image != "" {
-		novel.Image = models.NullString{
-			NullString: sql.NullString{
-				Valid:  true,
-				String: image,
-			},
+	if form.Image != "" {
+		if err := uploader.NewImageUploader().Upload(form.Image, &novel); err != nil {
+			msg.AddError("message", err.Error())
+			return nil, msg.Errors
 		}
+	}
+
+	if tl := form.TranslatedLanguage; tl.Valid {
+		tl.String = strings.ToLower(tl.String)
+		novel.TranslatedLanguage = tl
 	}
 
 	if err = models.DB.Create(&novel).Error; err != nil {
@@ -74,5 +54,5 @@ func CreateNovel(c *gin.Context) (*models.NovelJSON, map[string][]string) {
 		return nil, msg.Errors
 	}
 
-	return novel.ToNovelJSON(), nil
+	return &novel, nil
 }

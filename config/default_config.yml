@@ -8,3 +8,6 @@ db_con_str: bakanovels.db
 i18n:
   directory: locales
   default_language: en_US
+
+storage:
+  dir: uploads
